@@ -8,5 +8,8 @@ setup(
     package_dir={'': 'src'},
     python_requires='>=3.6.*',
     version='0.0.1',
-    install_requires=['gym']
+    install_requires=[
+        'gym==0.17.1',
+        'numpy==1.18.4'
+    ]
 )
