@@ -1,14 +1,14 @@
 import gym
-import numpy as np
 from gym import spaces
+from gym.utils import seeding
 
 
 class MultiArmedBanditsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, nb_bandits=10, seed=None):
-        self.random_state = np.random.RandomState(seed=seed)
-        self.bandits = self.random_state.random.normal(
+        self.seed(seed=seed)
+        self.bandits = self.rng.random.normal(
             loc=0.0,
             scale=1.0,
             size=nb_bandits
@@ -19,7 +19,7 @@ class MultiArmedBanditsEnv(gym.Env):
     def step(self, action):
         assert self.action_space.contains(action)
         observation = None  # agent's observation of the current environment
-        reward = self.self.random_state.random.normal(
+        reward = self.self.rng.random.normal(
             loc=self.bandits[action],
             scale=1.0
         )
@@ -40,5 +40,5 @@ class MultiArmedBanditsEnv(gym.Env):
         pass
 
     def seed(self, seed=None):
-        self.random_state = np.random.RandomState(seed=seed)
+        self.rng, seed = seeding.np_random(seed=seed)
         return [seed]
