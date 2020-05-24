@@ -7,8 +7,9 @@ class MultiArmedBanditsEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, nb_bandits=10, seed=None):
+        self.rng = None
         self.seed(seed=seed)
-        self.bandits = self.rng.random.normal(
+        self.bandits = self.rng.normal(
             loc=0.0,
             scale=1.0,
             size=nb_bandits
@@ -19,14 +20,16 @@ class MultiArmedBanditsEnv(gym.Env):
     def step(self, action):
         assert self.action_space.contains(action)
         observation = None  # agent's observation of the current environment
-        reward = self.self.rng.random.normal(
-            loc=self.bandits[action],
-            scale=1.0
-        )
+        info = {
+            index: self.rng.normal(
+                loc=bandit,
+                scale=1.0
+            ) for index, bandit in enumerate(self.bandits)
+        }  # contains auxiliary diagnostic information (helpful for
+        # debugging, and sometimes learning)
+        reward = info[action]
         done = True  # whether the episode has ended, in which case further
         # step() calls will return undefined results
-        info = {}  # contains auxiliary diagnostic information (helpful for
-        # debugging, and sometimes learning)
         return observation, reward, done, info
 
     def reset(self):
