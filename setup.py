@@ -7,6 +7,6 @@ setup(
     version='0.0.1',
     install_requires=[
         'gym==0.17.1',
-        'numpy==1.18.4'
+        'numpy==1.22.0'
     ]
 )
